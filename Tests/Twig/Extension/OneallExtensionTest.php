@@ -3,7 +3,6 @@
 namespace Liip\OneallBundle\Tests\Twig\Extension;
 
 use Liip\OneallBundle\Twig\Extension\OneallExtension;
-use Liip\OneallBundle\Templating\Helper\OneallHelper;
 
 class OneallExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -34,7 +33,7 @@ class OneallExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenderInitialize()
     {
-        $helperMock = $this->getMockBuilder('Liip\OneallBundle\Templating\Helper\OneallHelper')
+        $helperMock = $this->getMockBuilder('Liip\OneallBundle\Twig\Extension\OneallExtension')
             ->disableOriginalConstructor()
             ->getMock();
         $helperMock->expects($this->once())
@@ -55,7 +54,7 @@ class OneallExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenderLoginButton()
     {
-        $helperMock = $this->getMockBuilder('Liip\OneallBundle\Templating\Helper\OneallHelper')
+        $helperMock = $this->getMockBuilder('Liip\OneallBundle\Twig\Extension\OneallExtension')
             ->disableOriginalConstructor()
             ->getMock();
         $helperMock->expects($this->once())
@@ -72,7 +71,7 @@ class OneallExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Liip\OneallBundle\Templating\Helper\OneallHelper::initialize
+     * @covers Liip\OneallBundle\Twig\Extension\OneallExtension::initialize
      */
     public function testInitialize()
     {
@@ -105,12 +104,12 @@ class OneallExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('getAppId')
             ->will($this->returnValue('123'));
 
-        $helper = new OneallHelper($templating, $oneallMock);
+        $helper = new OneallExtension($templating, $oneallMock);
         $this->assertSame($expected, $helper->initialize(array('cookie' => false)));
     }
 
     /**
-     * @covers Liip\OneallBundle\Templating\Helper\OneallHelper::loginButton
+     * @covers Liip\OneallBundle\Twig\Extension\OneallExtension::loginButton
      */
     public function testLoginButton()
     {
@@ -136,7 +135,7 @@ class OneallExtensionTest extends \PHPUnit_Framework_TestCase
         $oneallMock->expects($this->any())
             ->method('getAppId');
 
-        $helper = new OneallHelper($templating, $oneallMock, true, 'en_US', array(1,2,3) );
+        $helper = new OneallExtension($templating, $oneallMock, true, 'en_US', array(1,2,3) );
         $this->assertSame($expected, $helper->loginButton(array('label' => 'testLabel')));
     }
 }
