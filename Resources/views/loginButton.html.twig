@@ -1,0 +1,7 @@
+<div id="{{ login_container_id }}"></div>
+<script type="text/javascript">
+    oneall.api.plugins.social_login.build("{{ login_container_id }}", {
+        'providers': {{ social_links|json_encode()|raw }},
+        'callback_uri':"{{ callback_uri }}"
+    });
+</script>

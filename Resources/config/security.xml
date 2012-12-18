@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="liip_oneall.auth" class="Liip\OneallBundle\Security\Authentication\Provider\OneallProvider" public="false">
+            <argument /> <!-- Provider-shared Key -->
+            <argument type="service" id="liip_oneall.api" />
+        </service>
+
+        <service id="liip_oneall.logout_handler" class="Liip\OneallBundle\Security\Logout\OneallHandler" public="false">
+            <argument type="service" id="liip_oneall.api" />
+        </service>
+
+        <service id="liip_oneall.security.authentication.listener"
+                 class="Liip\OneallBundle\Security\Firewall\OneallListener"
+                 parent="security.authentication.listener.abstract"
+                 abstract="true">
+        </service>
+
+        <service id="liip_oneall.security.authentication.entry_point" class="Liip\OneallBundle\Security\EntryPoint\OneallAuthenticationEntryPoint" public="false" abstract="true">
+            <argument type="service" id="liip_oneall.api" />
+            <argument type="collection" />
+            <argument>%liip_oneall.social_links%</argument>
+        </service>
+
+    </services>
+</container>

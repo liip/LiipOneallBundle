@@ -1,0 +1,27 @@
+{
+    "name": "liip/oneall-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony2 Bundle to integrate oneall.com",
+    "keywords": ["oneall", "oneall", "twitter", "social media"],
+    "homepage": "http://liip.ch",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Liip AG",
+            "homepage": "http://liip.ch"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/framework-bundle": ">=2.1,<2.3-dev",
+        "symfony/security-bundle": ">=2.1,<2.3-dev",
+        "symfony/twig-bundle": ">=2.1,<2.3-dev"
+    },
+
+    "autoload": {
+        "psr-0": { "Liip\\OneallBundle": "" }
+    },
+
+    "target-dir": "Liip/OneallBundle"
+}

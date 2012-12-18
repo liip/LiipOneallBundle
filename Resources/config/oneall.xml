@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="liip_oneall.api" class="%liip_oneall.api.class%">
+            <argument type="collection">
+                <argument key="site_subdomain">%liip_oneall.site_subdomain%</argument>
+                <argument key="site_public_key">%liip_oneall.site_public_key%</argument>
+                <argument key="site_private_key">%liip_oneall.site_private_key%</argument>
+                <argument key="social_links">%liip_oneall.social_links%</argument>
+            </argument>
+            <argument type="service" id="session" />
+        </service>
+
+        <service id="liip_oneall.twig" class="%liip_oneall.twig.class%">
+            <argument type="service" id="service_container" />
+            <tag name="twig.extension" />
+        </service>
+
+    </services>
+</container>
