@@ -62,7 +62,7 @@ Installation
           <route id="_security_check" pattern="/login_check" />
           <route id="_security_logout" pattern="/logout" />     
   ```
-  5. Configure the `oneall` service in your config:
+  5. Configure the `oneall` service in your config (most of the information can be copied out of the oneall.com control panel):
   ``` yaml
           # application/config/config.yml
           liip_oneall:
@@ -89,7 +89,7 @@ Installation
           </liip_oneall:api>
   ```
 
-     Note you only need to specify either ``default_firewall_name`` or ``callback_path``.
+     > Note you only need to specify either ``default_firewall_name`` or ``callback_path``.
      The ``callback_path`` can either be a relative path or a route name.
 
   6. Add this configuration if you want to use the `security component`:
@@ -173,4 +173,5 @@ Just add the following code in one of your templates:
 <!-- inside a twig template -->
 {{ oneall_login_button({'login_container_id': 'some_tag_id'}) }}
 ```
-Note that ``login_container_id`` is optional and defaults to ``oa_social_login_container``.
+
+> Note that ``login_container_id`` is optional and defaults to ``oa_social_login_container``.
