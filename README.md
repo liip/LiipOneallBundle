@@ -13,7 +13,7 @@ Please also refer to the official documentation of the SecurityBundle, especiall
 for details on the configuration:
 http://symfony.com/doc/current/book/security.html
 
-[![Build Status](https://secure.travis-ci.org/liip/LiipOneallBundle.png?branch=master)](http://travis-ci.org/Liip/LiipOneallBundle)
+[![Build Status](https://secure.travis-ci.org/liip/LiipOneallBundle.png?branch=master)](http://travis-ci.org/liip/LiipOneallBundle)
 
 Prerequisites
 ============
