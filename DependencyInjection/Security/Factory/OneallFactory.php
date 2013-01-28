@@ -35,7 +35,8 @@ class OneallFactory extends AbstractFactory
 
         $definition = $container
             ->setDefinition($authProviderId, new DefinitionDecorator('liip_oneall.auth'))
-            ->replaceArgument(0, $id);
+            ->replaceArgument(0, $id)
+        ;
 
         // with user provider
         if (isset($config['provider'])) {

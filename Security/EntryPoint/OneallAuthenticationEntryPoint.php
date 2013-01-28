@@ -3,7 +3,7 @@
 namespace Liip\OneallBundle\Security\EntryPoint;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
-use Liip\OneallBundle\Oneall\OneallSessionPersistence;
+use Liip\OneallBundle\Oneall\OneallApi;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,10 +24,10 @@ class OneallAuthenticationEntryPoint implements AuthenticationEntryPointInterfac
     /**
      * Constructor
      *
-     * @param OneallSessionPersistence $oneall
+     * @param OneallApi $oneall
      * @param array    $options
      */
-    public function __construct(OneallSessionPersistence $oneall, array $options = array(), array $permissions = array())
+    public function __construct(OneallApi $oneall, array $options = array(), array $permissions = array())
     {
         $this->oneall = $oneall;
         $this->permissions = $permissions;

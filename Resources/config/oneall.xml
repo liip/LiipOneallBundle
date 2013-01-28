@@ -6,6 +6,7 @@
 
     <services>
 
+        <service id="liip_oneall.guzzle" class="Guzzle\Service\Client"/>
         <service id="liip_oneall.api" class="%liip_oneall.api.class%">
             <argument type="collection">
                 <argument key="site_subdomain">%liip_oneall.site_subdomain%</argument>
@@ -14,6 +15,7 @@
                 <argument key="social_links">%liip_oneall.social_links%</argument>
             </argument>
             <argument type="service" id="session" />
+            <argument type="service" id="liip_oneall.guzzle" />
         </service>
 
         <service id="liip_oneall.twig" class="%liip_oneall.twig.class%">

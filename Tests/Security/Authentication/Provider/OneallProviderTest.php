@@ -12,7 +12,7 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testThatUserCheckerCannotBeNullWhenUserProviderIsNotNull()
     {
-        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallSessionPersistence')
+        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallApi')
             ->disableOriginalConstructor()
             ->getMock();
         new OneallProvider('main', $oneallMock, $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface'));
@@ -23,7 +23,7 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testThatCannotAuthenticateWhenTokenIsNotOneallUserToken()
     {
-        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallSessionPersistence')
+        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallApi')
             ->disableOriginalConstructor()
             ->getMock();
         $oneallProvider = new OneallProvider('main', $oneallMock);
@@ -39,7 +39,7 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
         $providerKeyForProvider = 'main';
         $providerKeyForToken    = 'connect';
 
-        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallSessionPersistence')
+        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallApi')
             ->disableOriginalConstructor()
             ->getMock();
         $oneallProvider = new OneallProvider($providerKeyForProvider, $oneallMock);
@@ -62,7 +62,7 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
     {
         $providerKey = 'main';
 
-        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallSessionPersistence')
+        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallApi')
             ->disableOriginalConstructor()
             ->setMethods(array('getUser'))
             ->getMock();
@@ -91,7 +91,7 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
     {
         $providerKey = 'main';
 
-        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallSessionPersistence')
+        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallApi')
             ->disableOriginalConstructor()
             ->setMethods(array('getUser'))
             ->getMock();
@@ -122,7 +122,7 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
     {
         $providerKey = 'main';
 
-        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallSessionPersistence')
+        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallApi')
             ->disableOriginalConstructor()
             ->setMethods(array('getUser'))
             ->getMock();
@@ -153,7 +153,7 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
     {
         $providerKey = 'main';
 
-        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallSessionPersistence')
+        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallApi')
             ->disableOriginalConstructor()
             ->setMethods(array('getUser'))
             ->getMock();
@@ -189,7 +189,7 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
             ->method('getRoles')
             ->will($this->returnValue(array()));
 
-        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallSessionPersistence')
+        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallApi')
             ->disableOriginalConstructor()
             ->setMethods(array('getUser'))
             ->getMock();

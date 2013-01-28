@@ -7,4 +7,6 @@
     <route id="liip_oneall_callback" pattern="/callback">
         <default key="_controller">Liip:Oneall:callback</default>
     </route>
+
+    <route id="liip_oneall_check" pattern="/oneall />
 </routes>

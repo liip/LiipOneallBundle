@@ -8,6 +8,7 @@
         <service id="liip_oneall.auth" class="Liip\OneallBundle\Security\Authentication\Provider\OneallProvider" public="false">
             <argument /> <!-- Provider-shared Key -->
             <argument type="service" id="liip_oneall.api" />
+            <argument type="service" id="service_container" />
         </service>
 
         <service id="liip_oneall.logout_handler" class="Liip\OneallBundle\Security\Logout\OneallHandler" public="false">
@@ -24,6 +25,12 @@
             <argument type="service" id="liip_oneall.api" />
             <argument type="collection" />
             <argument>%liip_oneall.social_links%</argument>
+        </service>
+
+        <service id="liip_oneall.security.user_provider" class="Liip\OneallBundle\Security\User\UserProvider" public="false">
+            <argument type="service" id="liip_oneall.api" />
+            <argument type="service" id="fos_user.user_manager" />
+            <argument type="service" id="validator" />
         </service>
 
     </services>

@@ -18,7 +18,7 @@ class OneallAuthenticationEntryPointTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('http://localhost/index'));
 
         $options = array('check_path' => '/index');
-        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallSessionPersistence')
+        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallApi')
             ->disableOriginalConstructor()
             ->setMethods(array('getLoginUrl'))
             ->getMock();
@@ -46,7 +46,7 @@ class OneallAuthenticationEntryPointTest extends \PHPUnit_Framework_TestCase
         $requestMock = $this->getMock('Symfony\Component\HttpFoundation\Request', array('getUriForPath'));
 
         $options = array('check_path' => '/index', 'server_url' => 'http://server.url', 'app_url' => 'http://app.url');
-        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallSessionPersistence')
+        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallApi')
             ->disableOriginalConstructor()
             ->setMethods(array('getLoginUrl'))
             ->getMock();

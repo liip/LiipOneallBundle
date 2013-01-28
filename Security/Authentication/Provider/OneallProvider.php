@@ -3,7 +3,9 @@
 namespace Liip\OneallBundle\Security\Authentication\Provider;
 
 use Liip\OneallBundle\Security\User\UserManagerInterface;
-use Liip\OneallBundle\Oneall\OneallSessionPersistence;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\container;
+use Liip\OneallBundle\Oneall\OneallApi;
 
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
@@ -19,15 +21,16 @@ use Liip\OneallBundle\Security\Authentication\Token\OneallUserToken;
 class OneallProvider implements AuthenticationProviderInterface
 {
     /**
-     * @var OneallSessionPersistence
+     * @var OneallApi
      */
     protected $oneall;
+    protected $container;
     protected $providerKey;
     protected $userProvider;
     protected $userChecker;
     protected $createIfNotExists;
 
-    public function __construct($providerKey, OneallSessionPersistence $oneall, UserProviderInterface $userProvider = null, UserCheckerInterface $userChecker = null, $createIfNotExists = false)
+    public function __construct($providerKey, OneallApi $oneall, ContainerInterface $container, UserProviderInterface $userProvider = null, UserCheckerInterface $userChecker = null, $createIfNotExists = false)
     {
         if (null !== $userProvider && null === $userChecker) {
             throw new \InvalidArgumentException('$userChecker cannot be null, if $userProvider is not null.');
@@ -39,6 +42,7 @@ class OneallProvider implements AuthenticationProviderInterface
 
         $this->providerKey = $providerKey;
         $this->oneall = $oneall;
+        $this->container = $container;
         $this->userProvider = $userProvider;
         $this->userChecker = $userChecker;
         $this->createIfNotExists = $createIfNotExists;
@@ -61,7 +65,7 @@ class OneallProvider implements AuthenticationProviderInterface
         }
 
         try {
-            if ($uid = $this->oneall->getUser()) {
+            if ($uid = $this->oneall->getUser($this->container->get('request'))) {
                 $newToken = $this->createAuthenticatedToken($uid);
                 $newToken->setAttributes($token->getAttributes());
 

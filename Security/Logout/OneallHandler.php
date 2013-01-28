@@ -3,7 +3,7 @@
 namespace Liip\OneallBundle\Security\Logout;
 
 use Symfony\Component\HttpFoundation\Request;
-use Liip\OneallBundle\Oneall\OneallSessionPersistence;
+use Liip\OneallBundle\Oneall\OneallApi;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
@@ -17,7 +17,7 @@ class OneallHandler implements LogoutHandlerInterface
 {
     private $oneall;
 
-    public function __construct(OneallSessionPersistence $oneall)
+    public function __construct(OneallApi $oneall)
     {
         $this->oneall = $oneall;
     }

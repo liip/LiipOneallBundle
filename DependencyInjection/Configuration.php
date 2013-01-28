@@ -37,7 +37,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('class')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('api')->defaultValue('Liip\OneallBundle\Oneall\OneallSessionPersistence')->end()
+                        ->scalarNode('api')->defaultValue('Liip\OneallBundle\Oneall\OneallApi')->end()
                         ->scalarNode('twig')->defaultValue('Liip\OneallBundle\Twig\Extension\OneallExtension')->end()
                     ->end()
                 ->end()

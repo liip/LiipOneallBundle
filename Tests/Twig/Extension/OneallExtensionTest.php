@@ -96,7 +96,7 @@ class OneallExtensionTest extends \PHPUnit_Framework_TestCase
             ))
             ->will($this->returnValue($expected));
 
-        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallSessionPersistence')
+        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallApi')
             ->disableOriginalConstructor()
             ->setMethods(array('getAppId'))
             ->getMock();
@@ -128,7 +128,7 @@ class OneallExtensionTest extends \PHPUnit_Framework_TestCase
             ))
             ->will($this->returnValue($expected));
 
-        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallSessionPersistence')
+        $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallApi')
             ->disableOriginalConstructor()
             ->setMethods(array('getAppId'))
             ->getMock();
