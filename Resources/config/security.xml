@@ -31,6 +31,7 @@
             <argument type="service" id="liip_oneall.api" />
             <argument type="service" id="fos_user.user_manager" />
             <argument type="service" id="validator" />
+            <argument type="service" id="service_container" />
         </service>
 
     </services>
