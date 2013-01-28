@@ -8,5 +8,5 @@
         <default key="_controller">Liip:Oneall:callback</default>
     </route>
 
-    <route id="liip_oneall_check" pattern="/oneall />
+    <route id="liip_oneall_check" pattern="/oneall" />
 </routes>
