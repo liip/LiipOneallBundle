@@ -28,7 +28,6 @@ class OneallExtension extends \Twig_Extension
         return array(
             'oneall_initialize' => new \Twig_Function_Method($this, 'renderInitialize', array('is_safe' => array('html'))),
             'oneall_login_button' => new \Twig_Function_Method($this, 'renderLoginButton', array('is_safe' => array('html'))),
-            'oneall_logout_url' => new \Twig_Function_Method($this, 'renderLogoutUrl', array('is_safe' => array('html'))),
         );
     }
 
@@ -60,11 +59,6 @@ class OneallExtension extends \Twig_Extension
             'callback_uri' => $this->getCallbackUri(),
             'social_links' => $this->container->getParameter('liip_oneall.social_links'),
         ));
-    }
-
-    public function renderLogoutUrl($parameters = array(), $name = null)
-    {
-        return $this->container->get('oneall')->getLogoutUrl($parameters);
     }
 
     private function getCallbackUri()

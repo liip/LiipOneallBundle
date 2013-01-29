@@ -9,7 +9,7 @@ The code is based on https://github.com/FriendsOfSymfony/FOSFacebookBundle
 Please also refer to the Oneall documentation:
 http://docs.oneall.com/plugins/
 
-Please also refer to the official documentation of the SecurityBundle, especially
+Furthermore please also refer to the official documentation on security, especially
 for details on the configuration:
 http://symfony.com/doc/current/book/security.html
 
@@ -34,7 +34,7 @@ Installation
   
   2. Run the composer to download the bundle
   ``` bash
-  $ php composer.phar update liip/oneall-bundle
+  $ php composer.phar require liip/oneall-bundle
   ```
   
   3. Add this bundle to your application's kernel:
@@ -52,15 +52,15 @@ Installation
   4. Add the following routes to your application and point them at actual controller actions
   ``` yaml
           #application/config/routing.yml
-          _security_check:
+          liip_oneall_check:
               pattern:  /login_check
-          _security_logout:
+          liip_oneall_logout:
               pattern:  /logout
   ```
   ``` xml
           #application/config/routing.xml
-          <route id="_security_check" pattern="/login_check" />
-          <route id="_security_logout" pattern="/logout" />     
+          <route id="liip_oneall_check" pattern="/login_check" />
+          <route id="liip_oneall_logout" pattern="/logout" />
   ```
   5. Configure the `oneall` service in your config (most of the information can be copied out of the oneall.com control panel):
   ``` yaml
@@ -101,7 +101,7 @@ Installation
                       # since anonymous is allowed users will not be forced to login
                       pattern:   ^/.*
                       liip_oneall:
-                          check_path: /oneall
+                          check_path: liip_oneall_check
                       anonymous: true
                       logout:
                           handlers: ["liip_oneall.logout_handler"]
@@ -112,26 +112,27 @@ Installation
   ```
      You have to add `/secured/` in your routing for this to work. An example would be...
   ```
-              _oneall_secured:
+              liip_oneall_secured:
                   pattern: /secured/
                   defaults: { _controller: AcmeDemoBundle:Welcome:index }
   ```
 
-  7. Optionally define a custom user provider class and use it as the provider or define path for login
+  7. Optionally define a custom user provider class and use it as the provider or define path for login. There
+  is a default implementation for FOSUserBundle integration
   ```
           # application/config/config.yml
           security:
               providers:
                   # choose the provider name freely
                   my_liip_oneall_provider:
-                      id: my.oneall.user   # see "Example Custom User Provider using the FOS\UserBundle" chapter further down
+                      id: liip_oneall.user_provider   # see "Example Custom User Provider using the FOS\UserBundle" chapter further down
 
               firewalls:
                   public:
                       pattern:   ^/.*
                       liip_oneall:
                           login_path: /login
-                          check_path: /login_check
+                          check_path: liip_oneall_check
                           default_target_path: /
                           provider: my_liip_oneall_provider
                       anonymous: true
@@ -175,3 +176,9 @@ Just add the following code in one of your templates:
 ```
 
 > Note that ``login_container_id`` is optional and defaults to ``oa_social_login_container``.
+
+
+Include the logut url in your templates
+---------------------------------------
+
+TODO

@@ -3,14 +3,16 @@
 namespace Liip\OneallBundle\Security\User;
 
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Liip\OneallBundle\Security\OneallApiException;
-use Symfony\Component\Validator\Validator;
-use FOS\UserBundle\Model\UserManagerInterface;
-use Liip\OneallBundle\Oneall\OneallApi;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Validator\Validator;
+
+use FOS\UserBundle\Model\UserManagerInterface;
+
+use Liip\OneallBundle\Security\OneallApiException;
+use Liip\OneallBundle\Oneall\OneallApi;
 
 class UserProvider implements UserProviderInterface
 {
@@ -18,6 +20,7 @@ class UserProvider implements UserProviderInterface
     protected $userManager;
     protected $validator;
     protected $container;
+    protected $validationGroups;
 
     public function __construct(OneallApi $oneall, UserManagerInterface $userManager, Validator $validator, ContainerInterface $container)
     {
@@ -39,7 +42,6 @@ class UserProvider implements UserProviderInterface
 
     public function loadUserByUsername($username)
     {
-        $session = $this->container->get('request')->getSession();
         $user = $this->findUserByOneAllId($username);
 
         try {
@@ -47,39 +49,47 @@ class UserProvider implements UserProviderInterface
         } catch (OneallApiException $e) {
             $userdata = null;
         } catch (\Exception $e) {
-            $session->setFlash("Userdata could not be loaded");
+            $this->container->get('request')->getSession()->setFlash("Could not retrieve user data.");
         }
 
         if (!empty($userdata)) {
-            $network = array_shift($userdata['networks']);
-
             if (empty($user)) {
                 $user = $this->userManager->createUser();
                 $user->setEnabled(true);
                 $user->setPassword('');
+                $user->setOneallId($username);
             }
 
-            if (empty($network['email'])) {
-                $network['email'] = '';
+            if (!$this->updateUser($user, $userdata)) {
+                $this->container->get('request')->getSession()->setFlash("Username could not be stored.");
             }
-
-            $user->setOneallId($username);
-            $user->setUserData($network);
-
-            $validation = $this->validator->validate($user, 'Oneall');
-
-            if (count($validation)) {
-                $session->setFlash("Username could not be stored");
-            }
-
-            $this->userManager->updateUser($user);
         }
 
         if (empty($user)) {
-            throw new UsernameNotFoundException('Oneall user not found');
+            throw new UsernameNotFoundException('Oneall user not found.');
         }
 
         return $user;
+    }
+
+    protected function updateUser($user, $userdata)
+    {
+        $network = array_shift($userdata['networks']);
+
+        if (empty($network['email'])) {
+            $network['email'] = '';
+        }
+
+        $user->setUserData($network);
+
+        $validation = $this->validator->validate($user, $this->validationGroups);
+        if (count($validation)) {
+            return false;
+        }
+
+        $this->userManager->updateUser($user);
+
+        return true;
     }
 
     public function refreshUser(UserInterface $user)

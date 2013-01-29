@@ -39,6 +39,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('api')->defaultValue('Liip\OneallBundle\Oneall\OneallApi')->end()
                         ->scalarNode('twig')->defaultValue('Liip\OneallBundle\Twig\Extension\OneallExtension')->end()
+                        ->scalarNode('fosuserbundle_provider')->defaultValue('Liip\OneallBundle\Security\User\UserProvider')->end()
                     ->end()
                 ->end()
                 ->arrayNode('social_links')->prototype('scalar')->end()

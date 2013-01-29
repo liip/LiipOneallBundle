@@ -10,24 +10,21 @@ use Symfony\Component\Config\FileLocator;
 
 class LiipOneallExtension extends Extension
 {
-    protected $resources = array(
-        'oneall' => 'oneall.xml',
-        'security' => 'security.xml',
-    );
-
     public function load(array $configs, ContainerBuilder $container)
     {
         $processor = new Processor();
         $configuration = new Configuration();
         $config = $processor->processConfiguration($configuration, $configs);
 
-        $this->loadDefaults($container);
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('oneall.xml');
+        $loader->load('security.xml');
 
         if (isset($config['alias'])) {
             $container->setAlias($config['alias'], 'liip_oneall.api');
         }
 
-        foreach (array('api', 'twig') as $attribute) {
+        foreach (array('api', 'twig', 'fosuserbundle_provider') as $attribute) {
             $container->setParameter('liip_oneall.'.$attribute.'.class', $config['class'][$attribute]);
         }
 
@@ -36,17 +33,10 @@ class LiipOneallExtension extends Extension
         }
 
         $container->setParameter('liip_oneall.app_url', 'https://'.$config['site_subdomain'].'.api.oneall.com');
-    }
 
-    /**
-     * @codeCoverageIgnore
-     */
-    protected function loadDefaults($container)
-    {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-
-        foreach ($this->resources as $resource) {
-            $loader->load($resource);
+        $bundles = $container->getParameter('kernel.bundles');
+        if (isset($bundles['FOSUserBundle'])) {
+            $loader->load('security.fosuserbundle.xml');
         }
     }
 }
