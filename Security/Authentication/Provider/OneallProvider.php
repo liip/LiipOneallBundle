@@ -71,7 +71,7 @@ class OneallProvider implements AuthenticationProviderInterface
         } catch (AuthenticationException $failed) {
             throw $failed;
         } catch (\Exception $failed) {
-            throw new AuthenticationException($failed->getMessage(), null, (int)$failed->getCode(), $failed);
+            throw new AuthenticationException($failed->getMessage(), (int)$failed->getCode(), $failed);
         }
 
         throw new AuthenticationException('The Oneall user could not be retrieved from the session.');
