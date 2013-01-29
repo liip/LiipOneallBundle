@@ -17,14 +17,14 @@ class UserProvider implements UserProviderInterface
     protected $oneall;
     protected $userManager;
     protected $validator;
-    protected $session;
+    protected $container;
 
     public function __construct(OneallApi $oneall, UserManagerInterface $userManager, Validator $validator, ContainerInterface $container)
     {
         $this->oneall = $oneall;
         $this->userManager = $userManager;
         $this->validator = $validator;
-        $this->session = $container->get('request')->getSession();
+        $this->container = $container;
     }
 
     public function supportsClass($class)
@@ -39,6 +39,7 @@ class UserProvider implements UserProviderInterface
 
     public function loadUserByUsername($username)
     {
+        $session = $this->container->get('request')->getSession();
         $user = $this->findUserByOneAllId($username);
 
         try {
@@ -46,7 +47,7 @@ class UserProvider implements UserProviderInterface
         } catch (OneallApiException $e) {
             $userdata = null;
         } catch (\Exception $e) {
-            $this->session->setFlash("Userdata could not be loaded");
+            $session->setFlash("Userdata could not be loaded");
         }
 
         if (!empty($userdata)) {
@@ -54,7 +55,6 @@ class UserProvider implements UserProviderInterface
 
             if (empty($user)) {
                 $user = $this->userManager->createUser();
-                $user->setOneallId($username);
                 $user->setEnabled(true);
                 $user->setPassword('');
             }
@@ -63,12 +63,13 @@ class UserProvider implements UserProviderInterface
                 $network['email'] = '';
             }
 
+            $user->setOneallId($username);
             $user->setUserData($network);
 
             $validation = $this->validator->validate($user, 'Oneall');
 
             if (count($validation)) {
-                $this->session->setFlash("Username could not be stored");
+                $session->setFlash("Username could not be stored");
             }
 
             $this->userManager->updateUser($user);
