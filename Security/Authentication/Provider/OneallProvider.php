@@ -2,21 +2,18 @@
 
 namespace Liip\OneallBundle\Security\Authentication\Provider;
 
-use Liip\OneallBundle\Security\User\UserManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\container;
-use Liip\OneallBundle\Oneall\OneallApi;
-
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Liip\OneallBundle\Security\User\UserManagerInterface;
 use Liip\OneallBundle\Security\Authentication\Token\OneallUserToken;
+use Liip\OneallBundle\Oneall\OneallApi;
 
 class OneallProvider implements AuthenticationProviderInterface
 {
