@@ -3,6 +3,7 @@
 namespace Liip\OneallBundle\Tests\Security\Authentication\Provider;
 
 use Liip\OneallBundle\Security\Authentication\Provider\OneallProvider;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class OneallProviderTest extends \PHPUnit_Framework_TestCase
@@ -15,7 +16,10 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
         $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallApi')
             ->disableOriginalConstructor()
             ->getMock();
-        new OneallProvider('main', $oneallMock, $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface'));
+        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        new OneallProvider('main', $oneallMock, $container, $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface'));
     }
 
     /**
@@ -26,7 +30,10 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
         $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallApi')
             ->disableOriginalConstructor()
             ->getMock();
-        $oneallProvider = new OneallProvider('main', $oneallMock);
+        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $oneallProvider = new OneallProvider('main', $oneallMock, $container);
         $this->assertNull($oneallProvider->authenticate($this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')));
     }
 
@@ -42,7 +49,10 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
         $oneallMock = $this->getMockBuilder('Liip\OneallBundle\Oneall\OneallApi')
             ->disableOriginalConstructor()
             ->getMock();
-        $oneallProvider = new OneallProvider($providerKeyForProvider, $oneallMock);
+        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $oneallProvider = new OneallProvider($providerKeyForProvider, $oneallMock, $container);
 
         $tokenMock = $this->getMock('Liip\OneallBundle\Security\Authentication\Token\OneallUserToken', array('getProviderKey'), array($providerKeyForToken));
         $tokenMock->expects($this->any())
@@ -70,7 +80,14 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
             ->method('getUser')
             ->will($this->returnValue('123'));
 
-        $oneallProvider = new OneallProvider($providerKey, $oneallMock);
+        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $container->expects($this->once())
+            ->method('get')
+            ->will($this->returnValue(new Request()));
+
+        $oneallProvider = new OneallProvider($providerKey, $oneallMock, $container);
 
         $tokenMock = $this->getMock('Liip\OneallBundle\Security\Authentication\Token\OneallUserToken', array('getAttributes', 'getProviderKey'), array($providerKey));
         $tokenMock->expects($this->once())
@@ -99,6 +116,13 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
             ->method('getUser')
             ->will($this->returnValue('123'));
 
+        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $container->expects($this->once())
+            ->method('get')
+            ->will($this->returnValue(new Request()));
+
         $userProviderMock = $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface');
         $userProviderMock->expects($this->once())
             ->method('loadUserByUsername')
@@ -111,7 +135,7 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
             ->method('getProviderKey')
             ->will($this->returnValue($providerKey));
 
-        $oneallProvider = new OneallProvider($providerKey, $oneallMock, $userProviderMock, $userCheckerMock);
+        $oneallProvider = new OneallProvider($providerKey, $oneallMock, $container, $userProviderMock, $userCheckerMock);
         $oneallProvider->authenticate($tokenMock);
     }
 
@@ -130,6 +154,13 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
             ->method('getUser')
             ->will($this->returnValue('123'));
 
+        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $container->expects($this->once())
+            ->method('get')
+            ->will($this->returnValue(new Request()));
+
         $userProviderMock = $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface');
         $userProviderMock->expects($this->once())
             ->method('loadUserByUsername')
@@ -142,7 +173,7 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
             ->method('getProviderKey')
             ->will($this->returnValue($providerKey));
 
-        $oneallProvider = new OneallProvider($providerKey, $oneallMock, $userProviderMock, $userCheckerMock);
+        $oneallProvider = new OneallProvider($providerKey, $oneallMock, $container, $userProviderMock, $userCheckerMock);
         $oneallProvider->authenticate($tokenMock);
     }
 
@@ -161,6 +192,13 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
             ->method('getUser')
             ->will($this->returnValue(false));
 
+        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $container->expects($this->once())
+            ->method('get')
+            ->will($this->returnValue(new Request()));
+
         $userProviderMock = $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface');
         $userCheckerMock = $this->getMock('Symfony\Component\Security\Core\User\UserCheckerInterface');
 
@@ -169,7 +207,7 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
             ->method('getProviderKey')
             ->will($this->returnValue($providerKey));
 
-        $oneallProvider = new OneallProvider($providerKey, $oneallMock, $userProviderMock, $userCheckerMock);
+        $oneallProvider = new OneallProvider($providerKey, $oneallMock, $container, $userProviderMock, $userCheckerMock);
         $oneallProvider->authenticate($tokenMock);
     }
 
@@ -197,6 +235,13 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
             ->method('getUser')
             ->will($this->returnValue('123'));
 
+        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $container->expects($this->once())
+            ->method('get')
+            ->will($this->returnValue(new Request()));
+
         $userProviderMock = $this->getMock('Symfony\Component\Security\Core\User\UserProviderInterface');
         $userProviderMock->expects($this->once())
             ->method('loadUserByUsername')
@@ -215,7 +260,7 @@ class OneallProviderTest extends \PHPUnit_Framework_TestCase
             ->method('getProviderKey')
             ->will($this->returnValue($providerKey));
 
-        $oneallProvider = new OneallProvider($providerKey, $oneallMock, $userProviderMock, $userCheckerMock);
+        $oneallProvider = new OneallProvider($providerKey, $oneallMock, $container, $userProviderMock, $userCheckerMock);
         $this->assertEquals('l3l0', $oneallProvider->authenticate($tokenMock)->getUsername());
     }
 }
