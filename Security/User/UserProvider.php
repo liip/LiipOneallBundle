@@ -21,6 +21,7 @@ class UserProvider implements UserProviderInterface
     protected $validator;
     protected $container;
     protected $validationGroups;
+    protected $user;
 
     public function __construct(OneallApi $oneall, UserManagerInterface $userManager, Validator $validator, ContainerInterface $container)
     {
@@ -28,6 +29,7 @@ class UserProvider implements UserProviderInterface
         $this->userManager = $userManager;
         $this->validator = $validator;
         $this->container = $container;
+        $this->user = null;
     }
 
     public function supportsClass($class)
@@ -42,7 +44,9 @@ class UserProvider implements UserProviderInterface
 
     public function loadUserByUsername($username)
     {
-        $user = $this->findUserByOneAllId($username);
+        if (!$user = $this->user) {
+            $user = $this->findUserByOneAllId($username);
+        }
 
         try {
             $userdata = $this->oneall->getUserData($username);
@@ -94,8 +98,9 @@ class UserProvider implements UserProviderInterface
 
     public function refreshUser(UserInterface $user)
     {
-        $user = $this->userManager->findUserBy(array('id' => $user->getId()));
-        if (!$this->supportsClass(get_class($user)) || !$user->getOneallId()) {
+        $this->user = $this->userManager->findUserBy(array('id' => $user->getId()));
+
+        if (!$this->supportsClass(get_class($user))) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
