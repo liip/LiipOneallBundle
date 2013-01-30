@@ -93,4 +93,22 @@ class OneallApi
 
         return $user;
     }
+
+    public function postData($path, $body, $headers = null)
+    {
+        $site_subdomain = $this->config["site_subdomain"];
+        $site_public_key = $this->config["site_public_key"];
+        $site_private_key = $this->config["site_private_key"];
+
+        $site_domain = $site_subdomain.'.api.oneall.com';
+        $resource_uri = 'https://'.$site_domain.'/'.$path;
+
+        $request = $this->guzzle->post($resource_uri, $headers, $body);
+        $request->setAuth($site_public_key, $site_private_key);
+        $response = $request->send();
+        $json = json_decode($response->getBody());
+        $data = $json->response;
+
+        return $data;
+    }
 }
