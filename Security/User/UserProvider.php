@@ -49,7 +49,7 @@ class UserProvider implements UserProviderInterface
         } catch (OneallApiException $e) {
             $userdata = null;
         } catch (\Exception $e) {
-            $this->container->get('request')->getSession()->setFlash("Could not retrieve user data.");
+            $this->container->get('request')->getSession()->setFlash("oneall_user_error", "Could not retrieve user data.");
         }
 
         if (!empty($userdata)) {
@@ -61,7 +61,7 @@ class UserProvider implements UserProviderInterface
             $user->setOneallId($username);
 
             if (!$this->updateUser($user, $userdata)) {
-                $this->container->get('request')->getSession()->setFlash("Username could not be stored.");
+                $this->container->get('request')->getSession()->setFlash("oneall_user_error", "Username could not be stored.");
             }
         }
 
