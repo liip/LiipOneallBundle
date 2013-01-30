@@ -94,11 +94,7 @@ class UserProvider implements UserProviderInterface
 
     public function refreshUser(UserInterface $user)
     {
-        /*
-         * This should not be, but is used as we get null for the oneallid
-         */
         $user = $this->userManager->findUserBy(array('id' => $user->getId()));
-
         if (!$this->supportsClass(get_class($user)) || !$user->getOneallId()) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
