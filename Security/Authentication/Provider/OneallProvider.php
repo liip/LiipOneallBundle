@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 use Liip\OneallBundle\Security\User\UserManagerInterface;
 use Liip\OneallBundle\Security\Authentication\Token\OneallUserToken;
@@ -71,7 +72,11 @@ class OneallProvider implements AuthenticationProviderInterface
         } catch (AuthenticationException $failed) {
             throw $failed;
         } catch (\Exception $failed) {
-            throw new AuthenticationException($failed->getMessage(), null, (int)$failed->getCode(), $failed);
+            if (Kernel::MINOR_VERSION <= 1) {
+                throw new AuthenticationException($failed->getMessage(), null, (int)$failed->getCode(), $failed);
+            } else {
+                throw new AuthenticationException($failed->getMessage(), (int)$failed->getCode(), $failed);
+            }
         }
 
         throw new AuthenticationException('The Oneall user could not be retrieved from the session.');
