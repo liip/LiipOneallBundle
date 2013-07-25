@@ -23,5 +23,11 @@
         "psr-0": { "Liip\\OneallBundle": "" }
     },
 
-    "target-dir": "Liip/OneallBundle"
+    "target-dir": "Liip/OneallBundle",
+
+"extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
 }
