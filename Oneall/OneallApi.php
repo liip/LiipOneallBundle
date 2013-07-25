@@ -84,7 +84,7 @@ class OneallApi
 
         foreach ($data->user->identities->identity as $identity) {
             $user['networks'][$identity->provider]['preferredUsername'] = isset($identity->preferredUsername) ? $identity->preferredUsername : null;
-            $user['networks'][$identity->provider]['email'] = isset($identity->email) ? $identity->email : null;
+            $user['networks'][$identity->provider]['email'] = isset($identity->emails[0]->value) ? $identity->emails[0]->value : null;
             $user['networks'][$identity->provider]['location'] = isset($identity->currentLocation) ? $identity->currentLocation : null;
             $user['networks'][$identity->provider]['gender'] = isset($identity->gender) ? $identity->gender : null;
             $user['networks'][$identity->provider]['picture'] = isset($identity->thumbnailUrl) ? $identity->thumbnailUrl : null;
